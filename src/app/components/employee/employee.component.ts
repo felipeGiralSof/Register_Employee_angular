@@ -1,39 +1,35 @@
-import { Component, Input, Output,EventEmitter } from '@angular/core';
-import {  User, Employee } from 'src/app/models/employee.model';
+import { Component, OnInit } from '@angular/core';
+import {Country, IdentificationType, WorkArea} from 'src/app/models/employee.model';
+import {EmployeesService} from '../../services/employees.service'
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent  {
+export class EmployeeComponent implements OnInit {
+  public form : FormGroup;
+  country: Country[] = [];
+  workArea: WorkArea[] = [];
+  identificationType: IdentificationType[] = [];
 
-  @Input() employee: Employee = {
-    _id : '',
-    primerApellido: '',
-    segundoAPellido: '',
-    primerNombre: '',
-    segundoNombre: '',
-    paisEmpleo: [],
-    tipoIdentificacion: [],
-    numeroIdentificacion: '',
-    email: '',
-    fechaIngreso: new Date,
-    areaContratado:[],
-    estado: true,
-    FechaRegistro: new Date
-  };
-  // @Input() employee: User = {
-  //   id: '',
-  //   email: '',
-  //   password: '',
-  //   name: '',
-  // };
-  constructor() { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private employeesService: EmployeesService
+  ) {
+    this.form = this.formBuilder.group({
+      id: new FormControl(),
+      primerApellido: ['', [Validators.required]],
+      segundoApellido: ['', [Validators.required]],
+      primerNombre: ['', [Validators.required]],
+      otrosNombres: ['', [Validators.required]],
+    });
+  }
 
-  @Output() showEmployee = new EventEmitter<string>();
-
-  onShowDetailEmployee(){
-    this.showEmployee.emit(this.employee._id);
+  ngOnInit(): void {
+    this.employeesService.getCountry().subscribe(data => { this.country = data; });
+    this.employeesService.getWorkArea().subscribe(data => { this.workArea = data; });
+    this.employeesService.getIdentificationType().subscribe(data => { this.identificationType = data; });
   }
 }

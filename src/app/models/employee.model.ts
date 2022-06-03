@@ -1,26 +1,33 @@
 export interface Employee {
-  _id: string;
-  primerApellido: string;
-  segundoAPellido: string;
-  primerNombre: string;
-  segundoNombre: string;
-  paisEmpleo: string[];
-  tipoIdentificacion: string[];
-  numeroIdentificacion: string;
+  id: number;
+  surname: string;
+  secondSurname: string;
+  firstName: string;
+  otherNames: string;
+  country: Country;
+  identificationType: IdentificationType;
+  identificationNumber: string;
   email: string;
-  fechaIngreso: Date;
-  areaContratado:string[];
-  estado: boolean;
-  FechaRegistro: Date;
+  admissionDate: string;
+  workArea: WorkArea;
+  status: boolean;
+  createAt: string;
 }
 
-export interface User {
-  id: string;
-  email: string;
-  password: string;
+export interface Country {
+  id: number;
+  code: string;
   name: string;
 }
 
-export interface CreateUserDTO extends Omit<User, 'id'> {}
+export interface IdentificationType {
+  id: number;
+  name: string;
+  description: string;
+}
 
-export interface UpdateUserDTO extends Partial<CreateUserDTO>{}
+export interface WorkArea {
+  id: number;
+  name: string;
+  description:string;
+}
